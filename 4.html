@@ -20,7 +20,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
+            padding: 1rem;
         }
         
         .container {
@@ -177,6 +178,7 @@
             padding: 2rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
         }
         
         .controls-section::before {
@@ -325,11 +327,11 @@
             box-shadow: 0 0 10px currentColor;
         }
         
-        /* Адаптивность */
+        /* Адаптивность для планшетов */
         @media (max-width: 900px) {
             .container {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.5rem;
             }
             
             .snowglobe {
@@ -344,6 +346,248 @@
             
             h1 {
                 font-size: 2.5rem;
+            }
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            body {
+                padding: 0.8rem;
+            }
+            
+            .container {
+                gap: 1.2rem;
+            }
+            
+            .snowglobe {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .snowglobe-dome {
+                width: 220px;
+                height: 220px;
+                border-width: 6px;
+            }
+            
+            .snowglobe-base {
+                width: 140px;
+                height: 30px;
+                bottom: -15px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .controls-section {
+                padding: 1.5rem;
+            }
+            
+            .wish-display {
+                padding: 1.2rem;
+                min-height: 100px;
+            }
+            
+            .wish-text {
+                font-size: 1.1rem;
+            }
+            
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+                margin: 1.5rem 0;
+            }
+            
+            .control-btn {
+                padding: 12px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .magic-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            /* Уменьшаем размеры элементов внутри снежного шара */
+            .mountain {
+                border-left-width: 60px;
+                border-right-width: 60px;
+                border-bottom-width: 90px;
+            }
+            
+            .tree {
+                border-left-width: 12px;
+                border-right-width: 12px;
+                border-bottom-width: 30px;
+            }
+            
+            .house {
+                width: 45px;
+                height: 38px;
+            }
+            
+            .house-roof {
+                width: 60px;
+                border-left-width: 30px;
+                border-right-width: 30px;
+                border-bottom-width: 22px;
+                top: -15px;
+                left: -7px;
+            }
+            
+            .house-window {
+                width: 15px;
+                height: 15px;
+                top: 10px;
+                left: 10px;
+            }
+            
+            .snow-cover {
+                height: 60px;
+            }
+        }
+        
+        /* Для маленьких мобильных устройств */
+        @media (max-width: 480px) {
+            body {
+                padding: 0.5rem;
+            }
+            
+            .container {
+                gap: 1rem;
+            }
+            
+            .snowglobe {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .snowglobe-dome {
+                width: 180px;
+                height: 180px;
+                border-width: 5px;
+            }
+            
+            .snowglobe-base {
+                width: 120px;
+                height: 25px;
+                bottom: -12px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .controls-section {
+                padding: 1.2rem;
+            }
+            
+            .wish-display {
+                padding: 1rem;
+                min-height: 90px;
+                margin: 1.2rem 0;
+            }
+            
+            .wish-text {
+                font-size: 1rem;
+            }
+            
+            .controls-grid {
+                margin: 1.2rem 0;
+                gap: 0.6rem;
+            }
+            
+            .control-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .magic-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            /* Еще больше уменьшаем элементы внутри снежного шара */
+            .mountain {
+                border-left-width: 50px;
+                border-right-width: 50px;
+                border-bottom-width: 70px;
+            }
+            
+            .tree {
+                border-left-width: 10px;
+                border-right-width: 10px;
+                border-bottom-width: 25px;
+                bottom: 60px;
+            }
+            
+            .tree-4, .tree-5 {
+                bottom: 50px;
+            }
+            
+            .house {
+                width: 35px;
+                height: 30px;
+                bottom: 60px;
+            }
+            
+            .house-roof {
+                width: 45px;
+                border-left-width: 22px;
+                border-right-width: 22px;
+                border-bottom-width: 18px;
+                top: -12px;
+                left: -6px;
+            }
+            
+            .house-window {
+                width: 12px;
+                height: 12px;
+                top: 8px;
+                left: 8px;
+            }
+            
+            .snow-cover {
+                height: 50px;
+            }
+            
+            .snowflake {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .snowglobe {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .snowglobe-dome {
+                width: 160px;
+                height: 160px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .controls-section {
+                padding: 1rem;
+            }
+            
+            .control-btn {
+                padding: 8px 10px;
+            }
+        }
+        
+        /* Отключение анимаций для пользователей, которые предпочитают их отключить */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -463,6 +707,9 @@
                 if (isSnowing) return;
                 isSnowing = true;
                 
+                // Получаем размер сцены для правильного позиционирования снежинок
+                const sceneHeight = scene.clientHeight;
+                
                 snowInterval = setInterval(() => {
                     const snowflake = document.createElement('div');
                     snowflake.className = 'snowflake';
@@ -476,7 +723,9 @@
                     
                     // Удаляем снежинку после анимации
                     setTimeout(() => {
-                        snowflake.remove();
+                        if (snowflake.parentNode) {
+                            snowflake.remove();
+                        }
                     }, 7000);
                 }, 200);
             }
@@ -534,7 +783,9 @@
                         scene.appendChild(particle);
                         
                         setTimeout(() => {
-                            particle.remove();
+                            if (particle.parentNode) {
+                                particle.remove();
+                            }
                         }, 3000);
                     }, i * 100);
                 }

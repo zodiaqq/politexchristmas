@@ -33,15 +33,15 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
             position: relative;
             z-index: 2;
         }
         
         header {
             text-align: center;
-            margin-bottom: 2rem;
-            padding-top: 1rem;
+            margin-bottom: 1.5rem;
+            padding-top: 0.5rem;
         }
         
         h1 {
@@ -61,8 +61,8 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
@@ -82,8 +82,8 @@
         .video-input-section {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
         }
         
         .input-group {
@@ -95,7 +95,7 @@
         
         .url-input {
             flex: 1;
-            min-width: 300px;
+            min-width: 250px;
             padding: 12px 15px;
             border: none;
             border-radius: 8px;
@@ -119,6 +119,7 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             transition: transform 0.3s, box-shadow 0.3s;
+            white-space: nowrap;
         }
         
         .insert-btn:hover {
@@ -153,6 +154,7 @@
             justify-content: center;
             text-align: center;
             border: 2px dashed rgba(255, 215, 0, 0.5);
+            padding: 1rem;
         }
         
         .placeholder-icon {
@@ -171,8 +173,8 @@
         
         footer {
             text-align: center;
-            margin-top: 2rem;
-            padding: 1.5rem;
+            margin-top: 1.5rem;
+            padding: 1rem;
             font-size: 1.1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -192,19 +194,27 @@
             }
         }
         
-        /* Адаптивность */
+        /* Адаптивность для планшетов */
         @media (max-width: 768px) {
+            .container {
+                padding: 0.8rem;
+            }
+            
             h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
             
             .subtitle {
                 font-size: 1.1rem;
             }
             
+            .karaoke-container {
+                padding: 1.2rem;
+            }
+            
             #videoPlayer,
             .video-placeholder {
-                height: 300px;
+                height: 350px;
             }
             
             .input-group {
@@ -213,6 +223,122 @@
             
             .url-input {
                 min-width: auto;
+            }
+            
+            .video-input-section {
+                padding: 1rem;
+            }
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            header {
+                margin-bottom: 1rem;
+            }
+            
+            .karaoke-container {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .video-input-section {
+                padding: 0.8rem;
+                margin-bottom: 1rem;
+            }
+            
+            #videoPlayer,
+            .video-placeholder {
+                height: 250px;
+            }
+            
+            .placeholder-icon {
+                font-size: 3rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .video-placeholder h3 {
+                font-size: 1.2rem;
+            }
+            
+            .video-placeholder p {
+                font-size: 0.9rem;
+            }
+            
+            .input-group {
+                gap: 0.8rem;
+            }
+            
+            .url-input {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .insert-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .instructions {
+                font-size: 0.8rem;
+            }
+            
+            footer {
+                margin-top: 1rem;
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Для очень маленьких экранов */
+        @media (max-width: 360px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .karaoke-container {
+                padding: 0.8rem;
+            }
+            
+            #videoPlayer,
+            .video-placeholder {
+                height: 200px;
+            }
+            
+            .placeholder-icon {
+                font-size: 2.5rem;
+            }
+            
+            .video-placeholder h3 {
+                font-size: 1.1rem;
+            }
+            
+            .video-placeholder p {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Отключение анимаций для пользователей, которые предпочитают их отключить */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -261,14 +387,14 @@
         // Создание снежинок
         function createSnowflakes() {
             const container = document.getElementById('snowflakes-container');
-            const snowflakesCount = 50;
+            const snowflakesCount = 30; // Уменьшено количество снежинок для мобильных
             
             for (let i = 0; i < snowflakesCount; i++) {
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
                 snowflake.innerHTML = '❄';
                 
-                const size = Math.random() * 20 + 10;
+                const size = Math.random() * 15 + 8; // Уменьшены размеры снежинок
                 const left = Math.random() * 100;
                 const animationDuration = Math.random() * 5 + 5;
                 const opacity = Math.random() * 0.7 + 0.3;
@@ -350,7 +476,34 @@
                 
                 videoElement.appendChild(sourceElement);
                 videoPlaceholder.parentNode.replaceChild(videoElement, videoPlaceholder);
+                
+                // Адаптация высоты для мобильных
+                if (window.innerWidth <= 768) {
+                    videoElement.style.height = '350px';
+                }
+                if (window.innerWidth <= 480) {
+                    videoElement.style.height = '250px';
+                }
+                if (window.innerWidth <= 360) {
+                    videoElement.style.height = '200px';
+                }
             }
+            
+            // Обработка изменения размера окна
+            window.addEventListener('resize', function() {
+                // Обновление размеров видео при изменении размера окна
+                if (videoPlayer.style.display !== 'none') {
+                    if (window.innerWidth <= 768) {
+                        videoPlayer.style.height = '350px';
+                    } else if (window.innerWidth <= 480) {
+                        videoPlayer.style.height = '250px';
+                    } else if (window.innerWidth <= 360) {
+                        videoPlayer.style.height = '200px';
+                    } else {
+                        videoPlayer.style.height = '500px';
+                    }
+                }
+            });
         });
     </script>
 </body>

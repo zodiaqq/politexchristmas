@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новогодние Предсказания</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0b3d2c 0%, #1a5e3f 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        /* Снежинки */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5em;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.8;
+            z-index: 1;
+        }
+        
+        /* Контейнер */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        /* Шапка */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 1rem;
+        }
+        
+        h1 {
+            font-family: 'Marck Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            animation: glow 2s infinite alternate;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        /* Основной контент */
+        .gift-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        
+        .gift-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .gift-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .gift-box {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #dc143c, #ff4444);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(220, 20, 60, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gift-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(220, 20, 60, 0.6);
+        }
+        
+        .gift-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: #ffd700;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .gift-icon {
+            font-size: 5rem;
+            color: white;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+        }
+        
+        .gift-text {
+            font-size: 1.3rem;
+            margin-top: 1rem;
+        }
+        
+        /* Рулетка */
+        .roulette-container {
+            width: 100%;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin: 2rem 0;
+            display: none;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+        
+        .roulette {
+            display: flex;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            transition: transform 0.1s linear;
+        }
+        
+        .prediction-item {
+            min-width: 300px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            font-size: 1.2rem;
+            text-align: center;
+            border-right: 1px dashed rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .selected-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 5px;
+            height: 100%;
+            background: #ffd700;
+            box-shadow: 0 0 10px #ffd700;
+            z-index: 5;
+        }
+        
+        /* Результат */
+        .result-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+        
+        .result-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .result-title {
+            font-family: 'Marck Script', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #ffd700;
+        }
+        
+        .result-text {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+        
+        .try-again-btn {
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            color: #0b3d2c;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+        
+        .try-again-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+        
+        /* Подвал */
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+        }
+        
+        /* Анимации */
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        /* Адаптивность для планшетов */
+        @media (max-width: 900px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .gift-section, .result-section {
+                padding: 2rem;
+            }
+            
+            .gift-box {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .gift-icon {
+                font-size: 4rem;
+            }
+            
+            .prediction-item {
+                min-width: 280px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 600px) {
+            body {
+                padding: 0.5rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            header {
+                margin-bottom: 2rem;
+            }
+            
+            .gift-section, .result-section {
+                padding: 1.5rem;
+            }
+            
+            .gift-box {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .gift-icon {
+                font-size: 3.5rem;
+            }
+            
+            .gift-text {
+                font-size: 1.1rem;
+            }
+            
+            .roulette-container {
+                height: 100px;
+            }
+            
+            .prediction-item {
+                min-width: 250px;
+                font-size: 1rem;
+                padding: 0 1.5rem;
+            }
+            
+            .result-title {
+                font-size: 2rem;
+            }
+            
+            .result-text {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+            
+            .try-again-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            footer {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Для очень маленьких экранов */
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .gift-box {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .gift-icon {
+                font-size: 3rem;
+            }
+            
+            .prediction-item {
+                min-width: 220px;
+                font-size: 0.9rem;
+                padding: 0 1rem;
+            }
+        }
+        
+        /* Отключение анимаций для пользователей, которые предпочитают их отключить */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Снежинки -->
+    <div id="snowflakes-container"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Новогодние Предсказания</h1>
+            <div class="subtitle">Открой подарок и узнай, что ждет тебя в новом году!</div>
+        </header>
+        
+        <div class="gift-section">
+            <div class="gift-container">
+                <div class="gift-box" id="giftBox">
+                    <div class="gift-icon">🎁</div>
+                </div>
+                <div class="gift-text">Нажми на подарок, чтобы открыть предсказание</div>
+            </div>
+            
+            <div class="roulette-container" id="rouletteContainer">
+                <div class="selected-indicator"></div>
+                <div class="roulette" id="roulette">
+                    <!-- Предсказания будут добавлены через JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-section" id="resultSection">
+            <h2 class="result-title">Ваше предсказание на новый год:</h2>
+            <div class="result-text" id="resultText"></div>
+            <button class="try-again-btn" id="tryAgainBtn">
+                <span>🔄</span> Попробовать еще раз
+            </button>
+        </div>
+        
+        <footer>
+            <p>Пусть новый год принесет вам счастье и удачу! ✨</p>
+        </footer>
+    </div>
+
+    <script>
+        // Предсказания
+        const predictions = [
+            "Вас ждет неожиданная встреча, которая изменит вашу жизнь.",
+            "Грядет финансовый успех и стабильность.",
+            "Вы откроете в себе новый талант.",
+            "Путешествие принесет вам массу впечатлений.",
+            "Любовь придет внезапно и останется надолго.",
+            "Вы найдете решение давней проблемы.",
+            "Ваша мечта наконец-то сбудется.",
+            "Вас ждет повышение по карьерной лестнице.",
+            "Вы обретете верных друзей.",
+            "Здоровье и энергия будут на высоте.",
+            "Вы получите ценный совет от незнакомца.",
+            "Вас ждет приятный сюрприз от близких.",
+            "Удача будет сопутствовать вам во всем.",
+            "Вы сможете начать новое дело, которое принесет успех.",
+            "Вас ждет период творческого вдохновения."
+        ];
+
+        // Создание снежинок
+        function createSnowflakes() {
+            const container = document.getElementById('snowflakes-container');
+            const snowflakesCount = 40;
+            
+            for (let i = 0; i < snowflakesCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '❄';
+                
+                const size = Math.random() * 20 + 10;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 5 + 5;
+                const opacity = Math.random() * 0.7 + 0.3;
+                
+                snowflake.style.left = `${left}vw`;
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.opacity = opacity;
+                snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(snowflake);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createSnowflakes();
+            
+            const giftBox = document.getElementById('giftBox');
+            const rouletteContainer = document.getElementById('rouletteContainer');
+            const roulette = document.getElementById('roulette');
+            const resultSection = document.getElementById('resultSection');
+            const resultText = document.getElementById('resultText');
+            const tryAgainBtn = document.getElementById('tryAgainBtn');
+            
+            let isSpinning = false;
+            let currentPrediction = '';
+            
+            // Заполняем рулетку предсказаниями
+            function fillRoulette() {
+                roulette.innerHTML = '';
+                
+                // Добавляем дополнительные копии для плавной анимации
+                for (let i = 0; i < 3; i++) {
+                    predictions.forEach(prediction => {
+                        const predictionItem = document.createElement('div');
+                        predictionItem.className = 'prediction-item';
+                        predictionItem.textContent = prediction;
+                        roulette.appendChild(predictionItem);
+                    });
+                }
+            }
+            
+            // Запуск рулетки
+            function spinRoulette() {
+                if (isSpinning) return;
+                
+                isSpinning = true;
+                giftBox.classList.add('shake');
+                
+                // Скрываем подарок и показываем рулетку
+                setTimeout(() => {
+                    giftBox.style.display = 'none';
+                    rouletteContainer.style.display = 'block';
+                    
+                    // Заполняем рулетку
+                    fillRoulette();
+                    
+                    // Запускаем анимацию вращения
+                    const rouletteWidth = roulette.scrollWidth / 3; // Треть от общей ширины (т.к. 3 копии)
+                    const randomOffset = -Math.floor(Math.random() * rouletteWidth);
+                    
+                    // Начальная позиция (быстрое вращение)
+                    roulette.style.transition = 'none';
+                    roulette.style.transform = `translateX(${randomOffset}px)`;
+                    
+                    // Даем время для перерисовки
+                    setTimeout(() => {
+                        // Запускаем плавное замедление
+                        roulette.style.transition = 'transform 3s cubic-bezier(0.2, 0.8, 0.3, 1)';
+                        
+                        // Вычисляем конечную позицию (случайное предсказание)
+                        const predictionIndex = Math.floor(Math.random() * predictions.length);
+                        const itemWidth = roulette.children[0].offsetWidth;
+                        const finalOffset = -(predictionIndex * itemWidth + (rouletteWidth * 2));
+                        
+                        roulette.style.transform = `translateX(${finalOffset}px)`;
+                        
+                        // Сохраняем выбранное предсказание
+                        currentPrediction = predictions[predictionIndex];
+                        
+                        // Показываем результат после остановки рулетки
+                        setTimeout(() => {
+                            showResult();
+                            isSpinning = false;
+                        }, 3500);
+                    }, 50);
+                }, 500);
+            }
+            
+            // Показ результата
+            function showResult() {
+                resultText.textContent = currentPrediction;
+                resultSection.style.display = 'block';
+                
+                // Прокручиваем к результату
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Сброс к начальному состоянию
+            function resetGame() {
+                giftBox.style.display = 'flex';
+                rouletteContainer.style.display = 'none';
+                resultSection.style.display = 'none';
+                giftBox.classList.remove('shake');
+            }
+            
+            // Обработчики событий
+            giftBox.addEventListener('click', spinRoulette);
+            tryAgainBtn.addEventListener('click', resetGame);
+        });
+    </script>
+</body>
+</html>

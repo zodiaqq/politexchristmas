@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ёлка — интерактив</title>
+<style>
+  :root{
+    --bg1:#0c2a52;
+    --bg2:#1a3d6b;
+    --accent:#ff6b6b;
+    --glass: rgba(255,255,255,0.1);
+    --glass-strong: rgba(255,255,255,0.15);
+    --timer-bg: rgba(0,0,0,0.3);
+  }
+  *{box-sizing:border-box}
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    color:#fff;
+    overflow-x: hidden;
+  }
+
+  /* Full page background - ТЕМНЫЙ ВЕРХНИЙ ФОН ДЛЯ СНЕЖИНОК */
+  body{
+    background: 
+      radial-gradient(1200px 800px at 20% 15%, rgba(255,210,77,0.1), transparent),
+      radial-gradient(1000px 600px at 80% 20%, rgba(111,179,255,0.08), transparent),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 40%, #2a5d8a 70%, #4a8bba 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0px;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Snow texture overlay */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.3) 1px, transparent 0),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.2) 1px, transparent 0),
+      radial-gradient(circle at 40% 80%, rgba(255,255,255,0.25) 1.5px, transparent 0),
+      radial-gradient(circle at 60% 10%, rgba(255,255,255,0.15) 1px, transparent 0);
+    background-size: 300px 300px, 200px 200px, 250px 250px, 150px 150px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Snow ground - СНЕЖНЫЕ СУГРОБЫ НА ВСЮ ШИРИНУ */
+  .snow-ground {
+    position: absolute;
+    bottom: -400px;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    z-index: 5;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.4) 20%, rgba(255,255,255,0.8) 60%, rgba(255,255,255,0.95) 100%);
+    overflow: hidden;
+  }
+
+  /* Сугробы - РАСШИРЕНЫ ДО КРАЕВ ЭКРАНА */
+  .snow-drift {
+    position: absolute;
+    bottom: 0;
+    height: 100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+    border-top-left-radius: 50% 50px;
+    border-top-right-radius: 50% 50px;
+    box-shadow: 0 -10px 30px rgba(255,255,255,0.6);
+    z-index: 6;
+  }
+
+  .drift-1 {
+    left: -5%;
+    width: 30%;
+    height: 285px;
+  }
+
+  .drift-2 {
+    left: 15%;
+    width: 25%;
+    height: 305px;
+  }
+
+  .drift-3 {
+    left: 35%;
+    width: 30%;
+    height: 320px;
+  }
+
+  .drift-4 {
+    left: 60%;
+    width: 25%;
+    height: 300px;
+  }
+
+  .drift-5 {
+    left: 80%;
+    width: 30%;
+    height: 290px;
+  }
+
+  /* Игрушки на снегу - УВЕЛИЧЕННЫЕ */
+  .snow-toy {
+    position: absolute;
+    font-size: 64px;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+    transition: transform 0.3s ease;
+    z-index: 7;
+    transform: rotate(var(--tilt)) scale(1.3);
+    cursor: pointer;
+  }
+
+  /* Позиционирование и наклон игрушек - РАСПРЕДЕЛЕНЫ ПО ВСЕЙ ШИРИНЕ И ОПУЩЕНЫ НИЖЕ */
+  .toy-1 { bottom: 80px; left: 3%; --tilt: -5deg; }
+  .toy-2 { bottom: 100px; left: 18%; --tilt: 8deg; }
+  .toy-3 { bottom: 110px; left: 35%; --tilt: -12deg; }
+  .toy-4 { bottom: 135px; left: 50%; --tilt: 15deg; transform: translateX(-50%) rotate(15deg) scale(1.3); }
+  .toy-5 { bottom: 120px; right: 35%; --tilt: -8deg; }
+  .toy-6 { bottom: 130px; right: 18%; --tilt: 10deg; }
+  .toy-7 { bottom: 125px; right: 3%; --tilt: -15deg; }
+
+  /* Дополнительные игрушки на снегу - ТАКЖЕ ОПУЩЕНЫ */
+  .toy-8 { bottom: 140px; left: 10%; --tilt: 3deg; font-size: 52px; }
+  .toy-9 { bottom: 145px; left: 28%; --tilt: -7deg; font-size: 58px; }
+  .toy-10 { bottom: 135px; right: 10%; --tilt: 5deg; font-size: 56px; }
+  .toy-11 { bottom: 140px; right: 28%; --tilt: -10deg; font-size: 54px; }
+
+  /* Snowflakes - УЛУЧШИЛ ВИДИМОСТЬ */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 1em;
+    user-select: none;
+    z-index: 2;
+    opacity: 0.9;
+    pointer-events: none;
+    text-shadow: 0 0 5px rgba(255,255,255,0.7);
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Container */
+  .page {
+    width: min(1000px, 96%);
+    max-width:1000px;
+    margin: 0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    position: relative;
+    z-index: 10;
+    padding-bottom: 0px; /* УВЕЛИЧИЛ ОТСТУП ДЛЯ БОЛЬШЕГО СНЕГА */
+  }
+
+  /* Header / timer area */
+  .header {
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:14px;
+    border-radius:14px;
+    background: var(--glass);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .title {
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .title h1{
+    margin:0;
+    font-size:18px;
+    letter-spacing:0.6px;
+  }
+  .title .sub {
+    font-size:13px;
+    color: #dfeafb;
+    opacity:0.85;
+  }
+
+  .countdown {
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+
+  .countdown .bubble {
+    background: var(--timer-bg);
+    padding:10px 14px;
+    border-radius:10px;
+    min-width:72px;
+    text-align:center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    border:1px solid rgba(255,255,255,0.15);
+  }
+  .countdown .bubble .num {
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:0.6px;
+    color: #ffd24d;
+  }
+  .countdown .label {
+    font-size:11px;
+    color:#dfeafb;
+    opacity:0.8;
+    margin-top:4px;
+  }
+
+  /* Main visual area */
+  .visual {
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-bottom: 80px;
+  }
+
+  .tree-wrap{
+    width:100%;
+    max-width:520px;
+    position:relative;
+    aspect-ratio: 0.7 / 1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* the tree image */
+  .tree {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    border-radius:16px;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+  }
+
+  /* bulbs positioned absolutely over the tree image */
+  .bulb{
+    position:absolute;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #fff, #ffd9d9 20%, #ff8c8c 60%);
+    box-shadow: 0 0 8px rgba(255,140,140,0.9);
+    transform:translate(-50%,-50%) scale(1);
+    transition: transform 220ms ease, opacity 220ms;
+    opacity:0.3;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  /* class names for bulb colors */
+  .bulb.yellow{ background: radial-gradient(circle at 35% 30%, #fff, #fff3c2 20%, #ffd24d 60%); box-shadow:0 0 12px rgba(255,210,77,0.9);}
+  .bulb.red{ background: radial-gradient(circle at 35% 30%, #fff, #ffdcdc 20%, #ff6b6b 60%); box-shadow:0 0 10px rgba(255,100,100,0.9);}
+  .bulb.green{ background: radial-gradient(circle at 35% 30%, #fff, #dffbdc 20%, #7ee38a 60%); box-shadow:0 0 10px rgba(126,227,138,0.9);}
+  .bulb.blue{ background: radial-gradient(circle at 35% 30%, #fff, #e7f2ff 20%, #6fb3ff 60%); box-shadow:0 0 10px rgba(111,179,255,0.95);}
+
+  /* blinking animation */
+  @keyframes blink {
+    0% { transform: translate(-50%,-50%) scale(1); opacity:0.95; filter:brightness(1)}
+    50% { transform: translate(-50%,-50%) scale(0.9); opacity:0.5; filter:brightness(0.6)}
+    100% { transform: translate(-50%,-50%) scale(1); opacity:0.95; filter:brightness(1)}
+  }
+
+  .bulb.active { 
+    opacity: 0.95;
+  }
+
+  .bulb.animate { 
+    animation: blink 1.8s ease-in-out infinite;
+  }
+
+  /* Star styling */
+  .star {
+    position: absolute;
+    width: 68px;
+    height: 68px;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+    z-index: 5;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .star:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #fff, #ffeb99 30%, #ffd24d 70%);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    box-shadow: 0 0 35px rgba(255, 210, 77, 0.9);
+    transform-origin: center;
+  }
+
+  /* Star twinkle animation */
+  @keyframes starTwinkle {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+    25% { transform: scale(1.1) rotate(5deg); opacity: 0.8; filter: brightness(1.2); }
+    50% { transform: scale(0.95) rotate(-3deg); opacity: 1; filter: brightness(1.5); }
+    75% { transform: scale(1.05) rotate(2deg); opacity: 0.9; filter: brightness(1.3); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+  }
+
+  .star.active {
+    opacity: 0.95;
+  }
+
+  .star.animate {
+    animation: starTwinkle 2.5s ease-in-out infinite;
+  }
+
+  /* toys as links */
+  .toy {
+    position:absolute;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background: linear-gradient(180deg,#ffdde1,#ffb3c2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#111;
+    font-weight:700;
+    box-shadow: 0 10px 18px rgba(0,0,0,0.35), inset 0 -6px 12px rgba(255,255,255,0.06);
+    transition: transform 220ms cubic-bezier(.2,.9,.3,1);
+    transform-origin: center center;
+    border:2px solid rgba(255,255,255,0.06);
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  .toy:hover{
+    transform: scale(1.16);
+    z-index:40;
+  }
+
+  .toy .emoji{
+    font-size:18px;
+    pointer-events:none;
+  }
+
+  /* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ - ОБНОВЛЕНА С ОПУЩЕННЫМ СНЕГОМ */
+  @media (max-width: 1200px) {
+    .snow-ground {
+      height: 350px;
+    }
+    
+    .snow-drift {
+      height: 80px;
+    }
+    
+    .drift-1 { width: 25%; height: 220px; left: -3%; }
+    .drift-2 { width: 22%; height: 240px; left: 18%; }
+    .drift-3 { width: 25%; height: 250px; left: 38%; }
+    .drift-4 { width: 22%; height: 230px; left: 60%; }
+    .drift-5 { width: 25%; height: 225px; left: 80%; }
+    
+    .snow-toy {
+      font-size: 52px;
+    }
+    
+    /* ОПУЩЕНЫ ИГРУШКИ НА СНЕГУ */
+    .toy-1 { bottom: 60px; left: 2%; }
+    .toy-2 { bottom: 80px; left: 16%; }
+    .toy-3 { bottom: 90px; left: 33%; }
+    .toy-4 { bottom: 110px; left: 50%; }
+    .toy-5 { bottom: 95px; right: 33%; }
+    .toy-6 { bottom: 105px; right: 16%; }
+    .toy-7 { bottom: 100px; right: 2%; }
+    .toy-8 { bottom: 115px; left: 8%; font-size: 42px; }
+    .toy-9 { bottom: 120px; left: 26%; font-size: 46px; }
+    .toy-10 { bottom: 110px; right: 8%; font-size: 44px; }
+    .toy-11 { bottom: 115px; right: 26%; font-size: 43px; }
+    
+    .page {
+      padding-bottom: 0px; /* УВЕЛИЧЕН ОТСТУП */
+    }
+  }
+
+  @media (max-width: 900px) {
+    .snow-ground {
+      height: 300px;
+    }
+    
+    .drift-1 { width: 23%; height: 180px; left: -2%; }
+    .drift-2 { width: 20%; height: 200px; left: 18%; }
+    .drift-3 { width: 23%; height: 210px; left: 38%; }
+    .drift-4 { width: 20%; height: 190px; left: 60%; }
+    .drift-5 { width: 23%; height: 185px; left: 80%; }
+    
+    .snow-toy {
+      font-size: 44px;
+    }
+    
+    /* ОПУЩЕНЫ ИГРУШКИ НА СНЕГУ */
+    .toy-1 { bottom: 50px; left: 1%; }
+    .toy-2 { bottom: 70px; left: 15%; }
+    .toy-3 { bottom: 80px; left: 32%; }
+    .toy-4 { bottom: 95px; left: 50%; }
+    .toy-5 { bottom: 85px; right: 32%; }
+    .toy-6 { bottom: 90px; right: 15%; }
+    .toy-7 { bottom: 85px; right: 1%; }
+    .toy-8 { bottom: 100px; left: 7%; font-size: 36px; }
+    .toy-9 { bottom: 105px; left: 25%; font-size: 38px; }
+    .toy-10 { bottom: 95px; right: 7%; font-size: 37px; }
+    .toy-11 { bottom: 100px; right: 25%; font-size: 36px; }
+    
+    .page {
+      padding-bottom: 0px; /* УВЕЛИЧЕН ОТСТУП */
+    }
+  }
+
+  @media (max-width:700px){
+    body {
+      padding: 15px;
+    }
+    
+    .header{ 
+      flex-direction:column; 
+      align-items:center; 
+      gap:10px; 
+      padding:12px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .countdown{ 
+      flex-wrap:wrap; 
+      justify-content:center;
+      width: 100%;
+    }
+    
+    .countdown .bubble {
+      min-width: 60px;
+      padding: 8px 10px;
+    }
+    
+    .countdown .bubble .num {
+      font-size: 18px;
+    }
+    
+    .tree-wrap{ 
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    
+    .toy{ 
+      width:28px; 
+      height:28px; 
+    }
+    
+    .toy .emoji {
+      font-size: 14px;
+    }
+    
+    .bulb{ 
+      width:10px; 
+      height:10px; 
+    }
+    
+    .star { 
+      width: 40px; 
+      height: 40px; 
+    }
+    
+    /* СНЕГ НА ВСЮ ШИРИНУ ЭКРАНА */
+    .snow-ground {
+      height: 350px;
+      width: 100%;
+      left: 0;
+      bottom: -350px;
+    }
+    
+    .snow-drift {
+      height: 120px;
+    }
+    
+    /* СУГРОБЫ НА ВСЮ ШИРИНУ */
+    .drift-1 { 
+      width: 28%; 
+      height: 200px; 
+      left: -5%; 
+    }
+    .drift-2 { 
+      width: 25%; 
+      height: 220px; 
+      left: 18%; 
+    }
+    .drift-3 { 
+      width: 28%; 
+      height: 240px; 
+      left: 42%; 
+    }
+    .drift-4 { 
+      width: 25%; 
+      height: 210px; 
+      left: 65%; 
+    }
+    .drift-5 { 
+      width: 28%; 
+      height: 190px; 
+      left: 88%; 
+    }
+    
+    .snow-toy {
+      font-size: 36px;
+      transform: rotate(var(--tilt)) scale(1.1);
+    }
+    
+    /* ИГРУШКИ РАСПРЕДЕЛЕНЫ ПО ВСЕЙ ШИРИНЕ И ОПУЩЕНЫ */
+    .toy-1 { bottom: 70px; left: 2%; }
+    .toy-2 { bottom: 95px; left: 18%; }
+    .toy-3 { bottom: 85px; left: 35%; }
+    .toy-4 { bottom: 105px; left: 50%; }
+    .toy-5 { bottom: 90px; right: 35%; }
+    .toy-6 { bottom: 100px; right: 18%; }
+    .toy-7 { bottom: 80px; right: 2%; }
+    .toy-8 { bottom: 115px; left: 8%; font-size: 28px; }
+    .toy-9 { bottom: 110px; left: 28%; font-size: 30px; }
+    .toy-10 { bottom: 120px; right: 8%; font-size: 29px; }
+    .toy-11 { bottom: 105px; right: 28%; font-size: 28px; }
+    
+    .page {
+      padding-bottom: 0px; /* УВЕЛИЧЕН ОТСТУП */
+    }
+    
+    .visual {
+      margin-bottom: 40px;
+    }
+    
+    .title h1 {
+      font-size: 16px;
+      text-align: center;
+    }
+    
+    .title .sub {
+      font-size: 12px;
+      text-align: center;
+    }
+    
+    .title {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .snow-ground {
+      height: 320px;
+    }
+    
+    .drift-1 { width: 46%; height: 180px; left: -4%; }
+    .drift-2 { width: 43%; height: 200px; left: 18%; }
+    .drift-3 { width: 46%; height: 220px; left: 41%; }
+    .drift-4 { width:43%; height: 190px; left: 64%; }
+    .drift-5 { width: 46%; height: 170px; left: 87%; }
+    
+    .snow-toy {
+      font-size: 32px;
+    }
+    
+    /* ИГРУШКИ РАСПРЕДЕЛЕНЫ ПО ВСЕЙ ШИРИНЕ И ОПУЩЕНЫ */
+    .toy-1 { bottom: 65px; left: 1%; }
+    .toy-2 { bottom: 85px; left: 16%; }
+    .toy-3 { bottom: 75px; left: 33%; }
+    .toy-4 { bottom: 95px; left: 50%; }
+    .toy-5 { bottom: 80px; right: 33%; }
+    .toy-6 { bottom: 90px; right: 16%; }
+    .toy-7 { bottom: 70px; right: 1%; }
+    .toy-8 { bottom: 105px; left: 6%; font-size: 26px; }
+    .toy-9 { bottom: 100px; left: 25%; font-size: 28px; }
+    .toy-10 { bottom: 110px; right: 6%; font-size: 27px; }
+    .toy-11 { bottom: 95px; right: 25%; font-size: 26px; }
+    
+    .page {
+      padding-bottom: 0px; /* УВЕЛИЧЕН ОТСТУП */
+    }
+    
+    .countdown .bubble {
+      min-width: 50px;
+      padding: 6px 8px;
+    }
+    
+    .countdown .bubble .num {
+      font-size: 16px;
+    }
+    
+    .countdown .label {
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .countdown {
+      gap: 5px;
+    }
+    
+    .countdown .bubble {
+      min-width: 45px;
+      padding: 5px;
+    }
+    
+    .countdown .bubble .num {
+      font-size: 14px;
+    }
+    
+    .snow-toy {
+      font-size: 28px;
+    }
+    
+    .toy-8, .toy-9, .toy-10, .toy-11 {
+      font-size: 24px;
+    }
+    
+    /* ИГРУШКИ РАСПРЕДЕЛЕНЫ ПО ВСЕЙ ШИРИНЕ И ОПУЩЕНЫ */
+    .toy-1 { left: 0%; bottom: 60px; }
+    .toy-2 { left: 15%; bottom: 80px; }
+    .toy-3 { left: 32%; bottom: 70px; }
+    .toy-5 { right: 32%; bottom: 75px; }
+    .toy-6 { right: 15%; bottom: 85px; }
+    .toy-7 { right: 0%; bottom: 65px; }
+    .toy-8 { left: 5%; bottom: 100px; }
+    .toy-9 { left: 23%; bottom: 95px; }
+    .toy-10 { right: 5%; bottom: 105px; }
+    .toy-11 { right: 23%; bottom: 90px; }
+    
+    .page {
+      padding-bottom: 0px; /* УВЕЛИЧЕН ОТСТУП */
+    }
+  }
+
+</style>
+</head>
+<body>
+  <div class="page" role="main">
+    <div style="height: 600px;"></div>
+    <div class="header" aria-live="polite">
+      <div class="title">
+        <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#fff7e6,#ffd24d);display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-weight:800;font-size:22px;">
+          ✨
+        </div>
+        <div>
+          <h1>До Нового года осталось</h1>
+          <div class="sub">Праздничная ёлка — нажимайте на игрушки</div>
+        </div>
+      </div>
+
+      <div class="countdown" id="countdown" aria-hidden="false">
+        <div class="bubble">
+          <div class="num" id="days">0</div>
+          <div class="label">Дней</div>
+        </div>
+        <div class="bubble">
+          <div class="num" id="hours">00</div>
+          <div class="label">Часов</div>
+        </div>
+        <div class="bubble">
+          <div class="num" id="minutes">00</div>
+          <div class="label">Минут</div>
+        </div>
+        <div class="bubble">
+          <div class="num" id="seconds">00</div>
+          <div class="label">Секунд</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="visual">
+      <div class="tree-wrap" id="treeWrap">
+        <!-- Основная картинка ёлки: поменяйте путь при необходимости -->
+        <img id="treeImage" class="tree" src="D:\Отчеты\техноелка\tree4.svg" alt="Векторная ёлка" />
+
+        <!-- Лампы гирлянды - 12 лампочек (по месяцам) -->
+        <!-- Январь -->
+        <span class="bulb red" style="left:50%; top:82%;"></span>
+        <!-- Февраль -->
+        <span class="bulb blue" style="left:42%; top:78%;"></span>
+        <!-- Март -->
+        <span class="bulb green" style="left:58%; top:75%;"></span>
+        <!-- Апрель -->
+        <span class="bulb yellow" style="left:35%; top:68%;"></span>
+        <!-- Май -->
+        <span class="bulb red" style="left:65%; top:65%;"></span>
+        <!-- Июнь -->
+        <span class="bulb blue" style="left:45%; top:58%;"></span>
+        <!-- Июль -->
+        <span class="bulb green" style="left:55%; top:55%;"></span>
+        <!-- Август -->
+        <span class="bulb yellow" style="left:40%; top:48%;"></span>
+        <!-- Сентябрь -->
+        <span class="bulb red" style="left:60%; top:45%;"></span>
+        <!-- Октябрь -->
+        <span class="bulb blue" style="left:48%; top:38%;"></span>
+        <!-- Ноябрь -->
+        <span class="bulb green" style="left:52%; top:32%;"></span>
+        <!-- Декабрь -->
+        <span class="bulb yellow" style="left:50%; top:25%;"></span>
+
+        <!-- Звезда на верхушке ёлки -->
+        <span class="star" style="left:51%; top:13%;"></span>
+
+        <!-- Игрушки - ссылки -->
+        <a class="toy" href="1.html" style="left:51%; top:15%; transform:translate(-50%,-50%)">
+          <span class="emoji">⭐</span>
+        </a>
+
+        <a class="toy" href="2.html" style="left:44%; top:36%; transform:translate(-50%,-50%)">
+          <span class="emoji">🎀</span>
+        </a>
+
+        <a class="toy" href="3.html" style="left:58%; top:43%; transform:translate(-50%,-50%)">
+          <span class="emoji">🍬</span>
+        </a>
+
+        <a class="toy" href="4.html" style="left:40%; top:57%; transform:translate(-50%,-50%)">
+          <span class="emoji">❄️</span>
+        </a>
+
+        <a class="toy" href="#" style="left:70%; top:67%; transform:translate(-50%,-50%)">
+          <span class="emoji">🎁</span>
+        </a>
+
+        <a class="toy" href="#" style="left:38%; top:78%; transform:translate(-50%,-50%)">
+            <span class="emoji">🐎</span>
+          </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Снежные сугробы с игрушками ВНЕ КОНТЕЙНЕРА .page -->
+  <div class="snow-ground">
+    <!-- Сугробы -->
+    <div class="snow-drift drift-1"></div>
+    <div class="snow-drift drift-2"></div>
+    <div class="snow-drift drift-3"></div>
+    <div class="snow-drift drift-4"></div>
+    <div class="snow-drift drift-5"></div>
+    
+    <!-- Игрушки на снегу -->
+    <div class="snow-toy toy-1">🎁</div>
+    <div class="snow-toy toy-2">🧸</div>
+    <div class="snow-toy toy-3">🔔</div>
+    <div class="snow-toy toy-4">⭐</div>
+    <div class="snow-toy toy-5">🎀</div>
+    <div class="snow-toy toy-6">❄️</div>
+    <div class="snow-toy toy-7">🍬</div>
+    <div class="snow-toy toy-8">⛸️</div>
+    <div class="snow-toy toy-9">🦌</div>
+    <div class="snow-toy toy-10">🎄</div>
+    <div class="snow-toy toy-11">☃️</div>
+  </div>
+
+<script>
+/*
+  Скрипт:
+   - Отображает обратный отсчёт до ближайшего 1 Января (следующего года).
+   - Каждая лампочка представляет один месяц
+   - Звезда загорается только 1 января на 2 дня
+   - Добавлены падающие снежинки
+*/
+
+/* ===== Настройки ===== */
+function getTargetDate() {
+  // следующий 1 января (полночь)
+  const now = new Date();
+  const year = now.getFullYear() + (now.getMonth() === 0 && now.getDate() === 1 ? 0 : 1);
+  // цель: 1 января года в 00:00:00
+  return new Date(year, 0, 1, 0, 0, 0);
+}
+
+/* элементы */
+const daysEl = document.getElementById('days');
+const hoursEl = document.getElementById('hours');
+const minutesEl = document.getElementById('minutes');
+const secondsEl = document.getElementById('seconds');
+const bulbs = Array.from(document.querySelectorAll('.bulb'));
+const star = document.querySelector('.star');
+
+let targetDate = getTargetDate();
+
+/* Функция для управления гирляндой по месяцам */
+function updateGarland() {
+  const now = new Date();
+  const currentMonth = now.getMonth(); // 0-11 (январь-декабрь)
+  
+  // Включаем лампочки за прошедшие месяцы (для октября - 10 лампочек)
+  bulbs.forEach((bulb, index) => {
+    // Индекс 0-11, где 0 - январь, 11 - декабрь
+    // Включаем лампочки для месяцев с января по текущий месяц
+    if (index <= currentMonth) {
+      bulb.classList.add('active', 'animate');
+      // Добавляем разные задержки для анимации
+      bulb.style.animationDelay = `${index * 0.2}s`;
+    } else {
+      // Остальные лампочки видны, но не горят
+      bulb.classList.remove('active', 'animate');
+    }
+  });
+}
+
+/* Функция для управления звездой */
+function updateStar() {
+  const now = new Date();
+  
+  // Звезда загорается только 1 января и горит 2 дня
+  const isNewYear = now.getMonth() === 0 && (now.getDate() === 1 || now.getDate() === 2);
+  
+  if (isNewYear) {
+    star.classList.add('active', 'animate');
+  } else {
+    // Звезда видна, но не горит
+    star.classList.remove('active', 'animate');
+  }
+}
+
+/* Обновление таймера */
+function updateTimer() {
+  const now = new Date();
+  const diff = targetDate - now;
+  if (diff <= 0) {
+    // Уже наступило
+    daysEl.textContent = '0';
+    hoursEl.textContent = '00';
+    minutesEl.textContent = '00';
+    secondsEl.textContent = '00';
+    return;
+  }
+  const sec = Math.floor(diff / 1000);
+  const d = Math.floor(sec / (24*3600));
+  const h = Math.floor((sec % (24*3600)) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+
+  daysEl.textContent = String(d);
+  hoursEl.textContent = String(h).padStart(2,'0');
+  minutesEl.textContent = String(m).padStart(2,'0');
+  secondsEl.textContent = String(s).padStart(2,'0');
+  
+  // Обновляем гирлянду и звезду
+  updateGarland();
+  updateStar();
+}
+
+/* Запуск таймера каждую секунду */
+updateTimer();
+const timerInterval = setInterval(() => {
+  updateTimer();
+}, 1000);
+
+/* Снежинки - УВЕЛИЧИЛ КОЛИЧЕСТВО И ВИДИМОСТЬ */
+function createSnowflakes() {
+  const snowflakeContainer = document.body;
+  const snowflakes = ['❄', '❅', '❆', '•', '✻', '✾'];
+  
+  for (let i = 0; i < 80; i++) { // Увеличил количество снежинок
+    setTimeout(() => {
+      const snowflake = document.createElement('div');
+      snowflake.className = 'snowflake';
+      snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+      snowflake.style.left = Math.random() * 100 + 'vw';
+      snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+      snowflake.style.fontSize = (Math.random() * 12 + 12) + 'px'; // Увеличил размер
+      
+      const animationDuration = Math.random() * 6 + 6;
+      snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
+      snowflake.style.animationDelay = Math.random() * 5 + 's';
+      
+      snowflakeContainer.appendChild(snowflake);
+      
+      // Удаляем снежинку после завершения анимации
+      setTimeout(() => {
+        if (snowflake.parentNode) {
+          snowflake.remove();
+        }
+      }, animationDuration * 1000);
+    }, i * 150); // Уменьшил задержку между созданием снежинок
+  }
+}
+
+// Создаем снежинки каждые 5 секунд (чаще)
+createSnowflakes();
+setInterval(createSnowflakes, 5000);
+
+/* Небольшая адаптация: при малых экранах уменьшаем задержки анимаций */
+function adaptForSize(){
+  if (window.innerWidth < 420){
+    bulbs.forEach((b,i)=>{
+      b.style.width = '10px';
+      b.style.height = '10px';
+    });
+  }
+}
+adaptForSize();
+window.addEventListener('resize', adaptForSize);
+
+/* Дополнительный приятный штрих: при наведении на игрушки показываем подсказку */
+const toys = Array.from(document.querySelectorAll('.toy'));
+toys.forEach(t=>{
+  t.addEventListener('mouseenter', ()=> {
+    // можно добавить легкий всплеск в размерах
+    t.style.transition = 'transform 180ms cubic-bezier(.2,.9,.3,1), box-shadow 180ms';
+    t.style.boxShadow = '0 18px 36px rgba(0,0,0,0.45)';
+  });
+  t.addEventListener('mouseleave', ()=> {
+    t.style.boxShadow = '';
+  });
+});
+
+/* Добавляем интерактивность игрушкам на снегу */
+const snowToys = Array.from(document.querySelectorAll('.snow-toy'));
+snowToys.forEach(toy => {
+  toy.addEventListener('click', () => {
+    // Создаем эффект "прыжка" при клике
+    toy.style.transform = `rotate(${getComputedStyle(toy).getPropertyValue('--tilt')}) translateY(-30px) scale(1.6)`;
+    setTimeout(() => {
+      toy.style.transform = `rotate(${getComputedStyle(toy).getPropertyValue('--tilt')}) scale(1.3)`;
+    }, 300);
+  });
+});
+</script>
+</body>
+</html>

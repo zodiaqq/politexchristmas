@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новогоднее видео</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0b3d2c 0%, #1a5e3f 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5em;
+            user-select: none;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-top: 1rem;
+        }
+        
+        h1 {
+            font-family: 'Marck Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            animation: glow 2s infinite alternate;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        .karaoke-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .karaoke-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+        }
+        
+        .video-input-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .url-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            color: #333;
+        }
+        
+        .url-input::placeholder {
+            color: #666;
+        }
+        
+        .insert-btn {
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            color: #0b3d2c;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .insert-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+        
+        .video-container {
+            width: 100%;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        #videoPlayer {
+            width: 100%;
+            height: 500px;
+            background: #000;
+            border: none;
+            border-radius: 10px;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(45deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5));
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 2px dashed rgba(255, 215, 0, 0.5);
+        }
+        
+        .placeholder-icon {
+            font-size: 4rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+        
+        .instructions {
+            text-align: center;
+            margin-top: 1rem;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            #videoPlayer,
+            .video-placeholder {
+                height: 300px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .url-input {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Снежинки -->
+    <div id="snowflakes-container"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Новогоднее Видео</h1>
+            <div class="subtitle">Вставьте ваше праздничное видео</div>
+        </header>
+        
+        <div class="karaoke-container">
+            <div class="video-input-section">
+                <div class="input-group">
+                    <input type="url" id="videoUrl" class="url-input" 
+                           placeholder="Вставьте ссылку на видео (YouTube, Vimeo или прямая ссылка)">
+                    <button id="insertVideoBtn" class="insert-btn">Вставить видео</button>
+                </div>
+                <div class="instructions">
+                    Поддерживаются: YouTube, Vimeo, MP4, WebM, OGG
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <div id="videoPlaceholder" class="video-placeholder">
+                    <div class="placeholder-icon">🎬</div>
+                    <h3>Видео появится здесь</h3>
+                    <p>Вставьте ссылку на ваше новогоднее видео выше</p>
+                </div>
+                <iframe id="videoPlayer" style="display: none;" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Счастливого Нового года! 🎄</p>
+        </footer>
+    </div>
+
+    <script>
+        // Создание снежинок
+        function createSnowflakes() {
+            const container = document.getElementById('snowflakes-container');
+            const snowflakesCount = 50;
+            
+            for (let i = 0; i < snowflakesCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '❄';
+                
+                const size = Math.random() * 20 + 10;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 5 + 5;
+                const opacity = Math.random() * 0.7 + 0.3;
+                
+                snowflake.style.left = `${left}vw`;
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.opacity = opacity;
+                snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(snowflake);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createSnowflakes();
+            
+            const videoUrlInput = document.getElementById('videoUrl');
+            const insertVideoBtn = document.getElementById('insertVideoBtn');
+            const videoPlaceholder = document.getElementById('videoPlaceholder');
+            const videoPlayer = document.getElementById('videoPlayer');
+            
+            insertVideoBtn.addEventListener('click', function() {
+                const videoUrl = videoUrlInput.value.trim();
+                if (!videoUrl) {
+                    alert('Пожалуйста, введите ссылку на видео');
+                    return;
+                }
+                
+                let embedUrl = '';
+                
+                // Обработка YouTube ссылок
+                if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                    let videoId = '';
+                    
+                    if (videoUrl.includes('youtube.com')) {
+                        const urlParams = new URLSearchParams(new URL(videoUrl).search);
+                        videoId = urlParams.get('v');
+                    } else if (videoUrl.includes('youtu.be')) {
+                        videoId = videoUrl.split('/').pop().split('?')[0];
+                    }
+                    
+                    if (videoId) {
+                        embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    }
+                }
+                // Обработка Vimeo ссылок
+                else if (videoUrl.includes('vimeo.com')) {
+                    const videoId = videoUrl.split('/').pop();
+                    embedUrl = `https://player.vimeo.com/video/${videoId}`;
+                }
+                // Прямые видео ссылки
+                else if (videoUrl.match(/\.(mp4|webm|ogg)$/i)) {
+                    // Для прямых видео создаем video элемент
+                    setupDirectVideo(videoUrl);
+                    return;
+                }
+                
+                if (embedUrl) {
+                    videoPlayer.src = embedUrl;
+                    videoPlayer.style.display = 'block';
+                    videoPlaceholder.style.display = 'none';
+                } else {
+                    alert('Не удалось распознать ссылку на видео. Поддерживаются YouTube, Vimeo и прямые ссылки на видеофайлы.');
+                }
+            });
+            
+            function setupDirectVideo(videoUrl) {
+                // Создаем video элемент вместо iframe
+                const videoElement = document.createElement('video');
+                videoElement.controls = true;
+                videoElement.style.width = '100%';
+                videoElement.style.height = '500px';
+                videoElement.style.borderRadius = '10px';
+                
+                const sourceElement = document.createElement('source');
+                sourceElement.src = videoUrl;
+                sourceElement.type = 'video/mp4';
+                
+                videoElement.appendChild(sourceElement);
+                videoPlaceholder.parentNode.replaceChild(videoElement, videoPlaceholder);
+            }
+        });
+    </script>
+</body>
+</html>

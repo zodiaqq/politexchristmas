@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новогоднее поздравление</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0b3d2c 0%, #1a5e3f 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5em;
+            user-select: none;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+        
+        h1 {
+            font-family: 'Marck Script', cursive;
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            animation: glow 2s infinite alternate;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        .message {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .message::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+        }
+        
+        .message p {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            text-align: justify;
+        }
+        
+        .signature {
+            text-align: right;
+            font-style: italic;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            font-family: 'Marck Script', cursive;
+        }
+        
+        .decorations {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+        
+        .decoration {
+            width: 80px;
+            height: 80px;
+            margin: 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .tree {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%233d8b3d" d="M50 10 L60 40 L40 40 Z M50 30 L65 60 L35 60 Z M50 50 L70 80 L30 80 Z"/><rect x="45" y="80" width="10" height="10" fill="%238B4513"/></svg>');
+        }
+        
+        .gift {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="40" fill="%23dc143c"/><rect x="20" y="30" width="60" height="15" fill="%23ffd700"/><rect x="45" y="10" width="10" height="60" fill="%23ffd700"/></svg>');
+        }
+        
+        .star {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,10 61,40 95,40 68,60 79,90 50,70 21,90 32,60 5,40 39,40" fill="%23FFD700"/></svg>');
+        }
+        
+        .bell {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 C60,10 68,18 68,28 L68,45 C68,50 70,55 75,58 L75,65 L25,65 L25,58 C30,55 32,50 32,45 L32,28 C32,18 40,10 50,10 Z" fill="%23FFD700"/><rect x="47" y="65" width="6" height="10" fill="%23FFD700"/><rect x="45" y="75" width="10" height="5" fill="%23FFD700"/></svg>');
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .message p {
+                font-size: 1.1rem;
+            }
+            
+            .decoration {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Снежинки -->
+    <div id="snowflakes-container"></div>
+    
+    <div class="container">
+        <header>
+            <h1>С Новым Годом!</h1>
+            <div class="subtitle">Пусть этот год принесёт счастье и удачу!</div>
+        </header>
+        
+        <div class="message">
+            <p>Дорогие друзья!</p>
+            <p>В этот волшебный праздник хочется пожелать, чтобы все мечты сбывались, а в доме царили уют, тепло и гармония. Пусть Новый год принесёт с собой новые надежды, новые мечты и новые возможности.</p>
+            <p>Желаю, чтобы каждый день был наполнен радостными событиями, приятными сюрпризами и яркими впечатлениями. Пусть здоровье будет крепким, любовь — безграничной, а счастье — бесконечным!</p>
+            <p>Пусть в вашей жизни будет много света, добра и взаимопонимания. Пусть все невзгоды останутся в прошлом, а будущее будет светлым и безоблачным.</p>
+            <div class="signature">С наилучшими пожеланиями!</div>
+        </div>
+        
+        <div class="decorations">
+            <div class="decoration tree"></div>
+            <div class="decoration gift"></div>
+            <div class="decoration star"></div>
+            <div class="decoration bell"></div>
+            <div class="decoration gift"></div>
+        </div>
+        
+        <footer>
+            <p>Пусть этот год будет полон чудес и счастливых моментов!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Создание снежинок
+        function createSnowflakes() {
+            const container = document.getElementById('snowflakes-container');
+            const snowflakesCount = 50;
+            
+            for (let i = 0; i < snowflakesCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '❄';
+                
+                // Случайные параметры для снежинок
+                const size = Math.random() * 20 + 10;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 5 + 5;
+                const opacity = Math.random() * 0.7 + 0.3;
+                
+                snowflake.style.left = `${left}vw`;
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.opacity = opacity;
+                snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(snowflake);
+            }
+        }
+        
+        // Запуск анимации снежинок после загрузки страницы
+        document.addEventListener('DOMContentLoaded', createSnowflakes);
+    </script>
+</body>
+</html>

@@ -33,15 +33,15 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
             position: relative;
             z-index: 2;
         }
         
         header {
             text-align: center;
-            margin-bottom: 3rem;
-            padding-top: 2rem;
+            margin-bottom: 2rem;
+            padding-top: 1rem;
         }
         
         h1 {
@@ -61,7 +61,7 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 15px;
-            padding: 2.5rem;
+            padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -98,13 +98,13 @@
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            margin: 3rem 0;
+            margin: 2rem 0;
+            gap: 10px;
         }
         
         .decoration {
             width: 80px;
             height: 80px;
-            margin: 10px;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -129,8 +129,8 @@
         
         footer {
             text-align: center;
-            margin-top: 3rem;
-            padding: 1.5rem;
+            margin-top: 2rem;
+            padding: 1rem;
             font-size: 1.1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -159,14 +159,18 @@
             }
         }
         
-        /* Адаптивность */
+        /* Адаптивность для планшетов */
         @media (max-width: 768px) {
             h1 {
-                font-size: 3rem;
+                font-size: 3.5rem;
             }
             
             .subtitle {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
+            }
+            
+            .message {
+                padding: 1.5rem;
             }
             
             .message p {
@@ -174,8 +178,88 @@
             }
             
             .decoration {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .signature {
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* Адаптивность для мобильных */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            header {
+                margin-bottom: 1.5rem;
+                padding-top: 0.5rem;
+            }
+            
+            .message {
+                padding: 1.2rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .message p {
+                font-size: 1rem;
+                margin-bottom: 1.2rem;
+                text-align: left;
+            }
+            
+            .decorations {
+                margin: 1.5rem 0;
+            }
+            
+            .decoration {
                 width: 60px;
                 height: 60px;
+            }
+            
+            .signature {
+                font-size: 1.2rem;
+                margin-top: 1.5rem;
+            }
+            
+            footer {
+                margin-top: 1.5rem;
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Для очень маленьких экранов */
+        @media (max-width: 360px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .message {
+                padding: 1rem;
+            }
+            
+            .decoration {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .decorations {
+                gap: 5px;
             }
         }
     </style>

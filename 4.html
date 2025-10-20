@@ -14,7 +14,7 @@
         
         body {
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #1a2a4a 0%, #2a5298 100%);
             color: white;
             min-height: 100vh;
             display: flex;
@@ -47,118 +47,290 @@
             filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
         }
         
-        .snowglobe-base {
-            width: 180px;
+        .snowglobe-stand {
+            width: 280px;
             height: 40px;
-            background: linear-gradient(45deg, #c0c0c0, #e8e8e8, #c0c0c0);
-            border-radius: 10px;
+            background: linear-gradient(45deg, #8B4513, #A0522D, #8B4513);
+            border-radius: 10px 10px 50% 50%;
             position: absolute;
-            bottom: -20px;
-            left: 50%;
+            bottom: -10px;
+            left: 44%;
+            transform: translateX(-50%);
+            z-index: 1;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 2px solid #654321;
+        }
+        
+        .snowglobe-base {
+            width: 200px;
+            height: 50px;
+            background: linear-gradient(45deg, #b8860b, #daa520, #b8860b);
+            border-radius: 50% 50% 10px 10px;
+            position: absolute;
+            bottom: 5px;
+            left: 44%;
             transform: translateX(-50%);
             z-index: 2;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            border: 2px solid #daa520;
         }
         
         .snowglobe-dome {
             width: 350px;
             height: 350px;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
             border-radius: 50%;
             position: relative;
-            border: 8px solid rgba(255, 255, 255, 0.8);
+            border: 12px solid rgba(255, 255, 255, 0.9);
             overflow: hidden;
             backdrop-filter: blur(2px);
+            box-shadow: 
+                inset 0 0 50px rgba(255, 255, 255, 0.2),
+                0 0 30px rgba(255, 255, 255, 0.3);
         }
         
         .snowglobe-scene {
             width: 100%;
             height: 100%;
             position: relative;
-            background: linear-gradient(180deg, #87CEEB 0%, #B0E2FF 100%);
+            background: linear-gradient(180deg, #1e5799 0%, #2989d8 50%, #7db9e8 100%);
             border-radius: 50%;
             overflow: hidden;
+            transition: background 1.5s ease;
         }
         
         .mountain {
             position: absolute;
-            bottom: 0;
+            bottom: 80px;
             width: 0;
             height: 0;
-            border-left: 80px solid transparent;
-            border-right: 80px solid transparent;
-            border-bottom: 120px solid #8B7355;
+            border-left: 90px solid transparent;
+            border-right: 90px solid transparent;
+            border-bottom: 140px solid #8B7355;
+            z-index: 1;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
         }
         
         .mountain-1 {
-            left: 20%;
-            border-bottom-color: #A52A2A;
+            left: 10%;
+            border-bottom-color: #654321;
         }
         
         .mountain-2 {
-            left: 40%;
-            border-bottom-color: #8B4513;
+            left: 35%;
+            border-bottom-color: #5d4037;
         }
         
         .mountain-3 {
             left: 60%;
-            border-bottom-color: #A0522D;
+            border-bottom-color: #4e342e;
+        }
+        
+        .mountain-snow {
+            position: absolute;
+            bottom: 80px;
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 50px solid white;
+            z-index: 2;
+        }
+        
+        .mountain-snow-1 {
+            left: 25%;
+            bottom: 150px; /* Опустили снег на горах */
+        }
+        
+        .mountain-snow-2 {
+            left: 50%;
+            bottom: 170px; /* Опустили снег на горах */
+        }
+        
+        .mountain-snow-3 {
+            left: 75%;
+            bottom: 160px; /* Опустили снег на горах */
         }
         
         .snow-cover {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 80px;
-            background: linear-gradient(180deg, #FFFFFF 0%, #F0F8FF 100%);
+            height: 100px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(240,248,255,0.9) 100%);
+            z-index: 3;
+            box-shadow: 0 -5px 10px rgba(255,255,255,0.5);
         }
         
         .tree {
             position: absolute;
-            bottom: 80px;
+            bottom: 100px;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 60px solid #2e7d32;
+            z-index: 4;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+        }
+        
+        .tree:before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -15px;
             width: 0;
             height: 0;
             border-left: 15px solid transparent;
             border-right: 15px solid transparent;
-            border-bottom: 40px solid #228B22;
+            border-bottom: 40px solid #388e3c;
         }
         
-        .tree-1 { left: 30%; }
-        .tree-2 { left: 50%; }
+        .tree:after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -10px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 30px solid #43a047;
+        }
+        
+        .tree-1 { left: 20%; }
+        .tree-2 { left: 45%; }
         .tree-3 { left: 70%; }
-        .tree-4 { left: 20%; bottom: 70px; transform: scale(0.8); }
-        .tree-5 { left: 80%; bottom: 70px; transform: scale(0.8); }
+        .tree-4 { left: 10%; bottom: 90px; transform: scale(0.8); }
+        .tree-5 { left: 80%; bottom: 90px; transform: scale(0.8); }
+        .tree-6 { left: 30%; bottom: 80px; transform: scale(0.7); }
+        .tree-7 { left: 60%; bottom: 80px; transform: scale(0.7); }
         
         .house {
             position: absolute;
-            bottom: 80px;
+            bottom: 100px;
             left: 40%;
-            width: 60px;
-            height: 50px;
-            background: #FFB6C1;
+            width: 70px;
+            height: 60px;
+            background: #ff8a65;
             transform: translateX(-50%);
+            z-index: 4;
+            border-radius: 5px 5px 0 0;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
         }
         
         .house-roof {
             position: absolute;
-            top: -20px;
+            top: -25px;
             left: -10px;
-            width: 80px;
+            width: 90px;
             height: 0;
-            border-left: 40px solid transparent;
-            border-right: 40px solid transparent;
-            border-bottom: 30px solid #8B4513;
+            border-left: 45px solid transparent;
+            border-right: 45px solid transparent;
+            border-bottom: 35px solid #5d4037;
         }
         
         .house-window {
             position: absolute;
             top: 15px;
             left: 15px;
+            width: 25px;
+            height: 25px;
+            background: #ffeb3b;
+            border-radius: 3px;
+            box-shadow: 0 0 15px #ffeb3b;
+            z-index: 5;
+        }
+        
+        .house-door {
+            position: absolute;
+            bottom: 0;
+            left: 35px;
             width: 20px;
-            height: 20px;
-            background: #FFD700;
+            height: 30px;
+            background: #5d4037;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .snowman {
+            position: absolute;
+            bottom: 90px; /* Опустили снеговика */
+            left: 15%;
+            z-index: 4;
+        }
+        
+        .snowman-body {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: white;
             border-radius: 50%;
-            box-shadow: 0 0 10px #FFD700;
+            bottom: 0;
+            left: 0;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .snowman-head {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            bottom: 35px;
+            left: 5px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .snowman-hat {
+            position: absolute;
+            width: 35px;
+            height: 10px;
+            background: #212121;
+            border-radius: 5px;
+            bottom: 60px;
+            left: 2.5px;
+            z-index: 5;
+        }
+        
+        .snowman-hat:before {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 20px;
+            background: #212121;
+            border-radius: 5px 5px 0 0;
+            bottom: 10px;
+            left: 5px;
+        }
+        
+        .snowman-eye {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #212121;
+            border-radius: 50%;
+        }
+        
+        .snowman-eye-left {
+            bottom: 75px;
+            left: 10px;
+        }
+        
+        .snowman-eye-right {
+            bottom: 75px;
+            left: 25px;
+        }
+        
+        .snowman-nose {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 10px solid #ff9800;
+            bottom: 70px;
+            left: 17.5px;
+            transform: rotate(180deg);
         }
         
         .snowflake {
@@ -169,6 +341,19 @@
             pointer-events: none;
             opacity: 0.8;
             animation: snow-fall linear infinite;
+            z-index: 6;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        
+        .star {
+            position: absolute;
+            color: white;
+            font-size: 0.8rem;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0;
+            animation: twinkle 4s infinite;
+            z-index: 1;
         }
         
         .controls-section {
@@ -344,6 +529,12 @@
                 height: 260px;
             }
             
+            .snowglobe-stand {
+                width: 220px;
+                height: 30px;
+                bottom: -10px;
+            }
+            
             h1 {
                 font-size: 2.5rem;
             }
@@ -367,13 +558,19 @@
             .snowglobe-dome {
                 width: 220px;
                 height: 220px;
-                border-width: 6px;
+                border-width: 8px;
             }
             
             .snowglobe-base {
-                width: 140px;
-                height: 30px;
-                bottom: -15px;
+                width: 160px;
+                height: 40px;
+                bottom: 5px;
+            }
+            
+            .snowglobe-stand {
+                width: 200px;
+                height: 25px;
+                bottom: -10px;
             }
             
             h1 {
@@ -414,37 +611,126 @@
                 border-left-width: 60px;
                 border-right-width: 60px;
                 border-bottom-width: 90px;
+                bottom: 60px;
+            }
+            
+            .mountain-snow {
+                border-left-width: 20px;
+                border-right-width: 20px;
+                border-bottom-width: 35px;
+                bottom: 60px;
+            }
+            
+            .mountain-snow-1 {
+                bottom: 120px;
+            }
+            
+            .mountain-snow-2 {
+                bottom: 140px;
+            }
+            
+            .mountain-snow-3 {
+                bottom: 130px;
             }
             
             .tree {
+                border-left-width: 15px;
+                border-right-width: 15px;
+                border-bottom-width: 45px;
+            }
+            
+            .tree:before {
                 border-left-width: 12px;
                 border-right-width: 12px;
                 border-bottom-width: 30px;
+                top: -15px;
+                left: -12px;
+            }
+            
+            .tree:after {
+                border-left-width: 8px;
+                border-right-width: 8px;
+                border-bottom-width: 22px;
+                top: -35px;
+                left: -8px;
             }
             
             .house {
-                width: 45px;
-                height: 38px;
+                width: 55px;
+                height: 45px;
             }
             
             .house-roof {
-                width: 60px;
-                border-left-width: 30px;
-                border-right-width: 30px;
-                border-bottom-width: 22px;
-                top: -15px;
+                width: 70px;
+                border-left-width: 35px;
+                border-right-width: 35px;
+                border-bottom-width: 25px;
+                top: -20px;
                 left: -7px;
             }
             
             .house-window {
-                width: 15px;
-                height: 15px;
+                width: 18px;
+                height: 18px;
                 top: 10px;
                 left: 10px;
             }
             
             .snow-cover {
-                height: 60px;
+                height: 80px;
+            }
+            
+            /* Опускаем ёлки и домик на мобильных устройствах */
+            .tree, .house, .snowman {
+                bottom: 80px;
+            }
+            
+            .tree-4, .tree-5, .tree-6, .tree-7 {
+                bottom: 70px;
+            }
+            
+            .snowman {
+                bottom: 70px; /* Опускаем снеговика на мобильных */
+            }
+            
+            .snowman-body {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .snowman-head {
+                width: 22px;
+                height: 22px;
+                bottom: 25px;
+                left: 4px;
+            }
+            
+            .snowman-hat {
+                width: 26px;
+                height: 8px;
+                bottom: 42px;
+                left: 2px;
+            }
+            
+            .snowman-hat:before {
+                width: 18px;
+                height: 15px;
+                left: 4px;
+            }
+            
+            .snowman-eye-left {
+                bottom: 55px;
+                left: 8px;
+            }
+            
+            .snowman-eye-right {
+                bottom: 55px;
+                left: 18px;
+            }
+            
+            .snowman-nose {
+                bottom: 52px;
+                left: 13px;
             }
         }
         
@@ -466,13 +752,19 @@
             .snowglobe-dome {
                 width: 180px;
                 height: 180px;
-                border-width: 5px;
+                border-width: 6px;
             }
             
             .snowglobe-base {
-                width: 120px;
-                height: 25px;
-                bottom: -12px;
+                width: 130px;
+                height: 30px;
+                bottom: 5px;
+            }
+            
+            .snowglobe-stand {
+                width: 170px;
+                height: 20px;
+                bottom: -10px;
             }
             
             h1 {
@@ -513,47 +805,128 @@
                 border-left-width: 50px;
                 border-right-width: 50px;
                 border-bottom-width: 70px;
-            }
-            
-            .tree {
-                border-left-width: 10px;
-                border-right-width: 10px;
-                border-bottom-width: 25px;
-                bottom: 60px;
-            }
-            
-            .tree-4, .tree-5 {
                 bottom: 50px;
             }
             
-            .house {
-                width: 35px;
-                height: 30px;
+            .mountain-snow {
+                border-left-width: 15px;
+                border-right-width: 15px;
+                border-bottom-width: 25px;
+                bottom: 50px;
+            }
+            
+            .mountain-snow-1 {
+                bottom: 90px;
+            }
+            
+            .mountain-snow-2 {
+                bottom: 110px;
+            }
+            
+            .mountain-snow-3 {
+                bottom: 100px;
+            }
+            
+            .tree {
+                border-left-width: 12px;
+                border-right-width: 12px;
+                border-bottom-width: 35px;
+                bottom: 70px;
+            }
+            
+            .tree:before {
+                border-left-width: 10px;
+                border-right-width: 10px;
+                border-bottom-width: 25px;
+                top: -12px;
+                left: -10px;
+            }
+            
+            .tree:after {
+                border-left-width: 6px;
+                border-right-width: 6px;
+                border-bottom-width: 18px;
+                top: -28px;
+                left: -6px;
+            }
+            
+            .tree-4, .tree-5, .tree-6, .tree-7 {
                 bottom: 60px;
             }
             
-            .house-roof {
+            .house {
                 width: 45px;
-                border-left-width: 22px;
-                border-right-width: 22px;
-                border-bottom-width: 18px;
-                top: -12px;
+                height: 35px;
+                bottom: 70px;
+            }
+            
+            .house-roof {
+                width: 55px;
+                border-left-width: 27px;
+                border-right-width: 27px;
+                border-bottom-width: 20px;
+                top: -15px;
                 left: -6px;
             }
             
             .house-window {
-                width: 12px;
-                height: 12px;
+                width: 15px;
+                height: 15px;
                 top: 8px;
                 left: 8px;
             }
             
             .snow-cover {
-                height: 50px;
+                height: 70px;
             }
             
             .snowflake {
                 font-size: 1rem;
+            }
+            
+            .snowman {
+                bottom: 60px; /* Опускаем снеговика на маленьких экранах */
+                left: 12%;
+            }
+            
+            .snowman-body {
+                width: 25px;
+                height: 25px;
+            }
+            
+            .snowman-head {
+                width: 18px;
+                height: 18px;
+                bottom: 20px;
+                left: 3.5px;
+            }
+            
+            .snowman-hat {
+                width: 20px;
+                height: 6px;
+                bottom: 33px;
+                left: 2.5px;
+            }
+            
+            .snowman-hat:before {
+                width: 14px;
+                height: 12px;
+                left: 3px;
+            }
+            
+            .snowman-eye-left {
+                bottom: 43px;
+                left: 6px;
+            }
+            
+            .snowman-eye-right {
+                bottom: 43px;
+                left: 14px;
+            }
+            
+            .snowman-nose {
+                bottom: 41px;
+                left: 10px;
             }
         }
         
@@ -569,6 +942,12 @@
                 height: 160px;
             }
             
+            .snowglobe-stand {
+                width: 150px;
+                height: 18px;
+                bottom: -10px;
+            }
+            
             h1 {
                 font-size: 1.6rem;
             }
@@ -579,6 +958,35 @@
             
             .control-btn {
                 padding: 8px 10px;
+            }
+            
+            /* Дополнительно опускаем элементы на очень маленьких экранах */
+            .tree, .house, .snowman {
+                bottom: 60px;
+            }
+            
+            .tree-4, .tree-5, .tree-6, .tree-7 {
+                bottom: 50px;
+            }
+            
+            .mountain {
+                bottom: 40px;
+            }
+            
+            .mountain-snow {
+                bottom: 40px;
+            }
+            
+            .mountain-snow-1 {
+                bottom: 80px;
+            }
+            
+            .mountain-snow-2 {
+                bottom: 100px;
+            }
+            
+            .mountain-snow-3 {
+                bottom: 90px;
             }
         }
         
@@ -598,10 +1006,15 @@
             <div class="snowglobe">
                 <div class="snowglobe-dome">
                     <div class="snowglobe-scene" id="snowglobeScene">
-                        <!-- Горы -->
+                        <!-- Горы на заднем плане -->
                         <div class="mountain mountain-1"></div>
                         <div class="mountain mountain-2"></div>
                         <div class="mountain mountain-3"></div>
+                        
+                        <!-- Снег на горах (опущенные белые треугольники) -->
+                        <div class="mountain-snow mountain-snow-1"></div>
+                        <div class="mountain-snow mountain-snow-2"></div>
+                        <div class="mountain-snow mountain-snow-3"></div>
                         
                         <!-- Снег -->
                         <div class="snow-cover"></div>
@@ -612,17 +1025,32 @@
                         <div class="tree tree-3"></div>
                         <div class="tree tree-4"></div>
                         <div class="tree tree-5"></div>
+                        <div class="tree tree-6"></div>
+                        <div class="tree tree-7"></div>
                         
                         <!-- Домик -->
                         <div class="house">
                             <div class="house-roof"></div>
                             <div class="house-window"></div>
+                            <div class="house-door"></div>
+                        </div>
+                        
+                        <!-- Снеговик (опущенный) -->
+                        <div class="snowman">
+                            <div class="snowman-body"></div>
+                            <div class="snowman-head"></div>
+                            <div class="snowman-hat"></div>
+                            <div class="snowman-eye snowman-eye-left"></div>
+                            <div class="snowman-eye snowman-eye-right"></div>
+                            <div class="snowman-nose"></div>
                         </div>
                         
                         <!-- Снежинки будут добавляться динамически -->
+                        <!-- Звезды будут добавляться динамически -->
                     </div>
                 </div>
                 <div class="snowglobe-base"></div>
+                <div class="snowglobe-stand"></div>
             </div>
         </div>
         
@@ -640,7 +1068,7 @@
                     <span>❄️</span> Запустить снег
                 </button>
                 <button class="control-btn btn-lights" id="btnLights">
-                    <span>💡</span> Включить огни
+                    <span>💡</span> Включить гирлянду
                 </button>
                 <button class="control-btn btn-music" id="btnMusic">
                     <span>🎵</span> Волшебная музыка
@@ -678,8 +1106,11 @@
 
         let isSnowing = false;
         let isNightMode = false;
+        let lightsOn = false;
+        let starsOn = false;
         let snowInterval;
         let lightsInterval;
+        let starsInterval;
 
         document.addEventListener('DOMContentLoaded', function() {
             const scene = document.getElementById('snowglobeScene');
@@ -736,35 +1167,88 @@
                 clearInterval(snowInterval);
             }
 
-            // Включение огней
-            function startLights() {
-                // Создаем огоньки на ёлках
-                const trees = document.querySelectorAll('.tree');
-                trees.forEach(tree => {
-                    for (let i = 0; i < 3; i++) {
-                        const light = document.createElement('div');
-                        light.className = 'light';
-                        light.style.background = ['#ff4444', '#44ff44', '#4444ff'][i];
-                        light.style.left = (Math.random() * 20 + 5) + 'px';
-                        light.style.top = (Math.random() * 20 + 5) + 'px';
-                        light.style.animationDelay = Math.random() * 2 + 's';
-                        tree.appendChild(light);
-                    }
-                });
+            // Включение/выключение гирлянды
+            function toggleLights() {
+                if (lightsOn) {
+                    // Выключаем гирлянду
+                    const lights = document.querySelectorAll('.light');
+                    lights.forEach(light => {
+                        light.remove();
+                    });
+                    btnLights.innerHTML = '<span>💡</span> Включить гирлянду';
+                    lightsOn = false;
+                } else {
+                    // Включаем гирлянду
+                    const trees = document.querySelectorAll('.tree');
+                    trees.forEach(tree => {
+                        for (let i = 0; i < 3; i++) {
+                            const light = document.createElement('div');
+                            light.className = 'light';
+                            light.style.background = ['#ff4444', '#44ff44', '#4444ff'][i];
+                            light.style.left = (Math.random() * 20 + 5) + 'px';
+                            light.style.top = (Math.random() * 20 + 5) + 'px';
+                            light.style.animationDelay = Math.random() * 2 + 's';
+                            tree.appendChild(light);
+                        }
+                    });
+                    btnLights.innerHTML = '<span>💡</span> Выключить гирлянду';
+                    lightsOn = true;
+                }
             }
 
             // Ночной режим
             function toggleNightMode() {
                 isNightMode = !isNightMode;
                 if (isNightMode) {
-                    scene.style.background = 'linear-gradient(180deg, #2c3e50 0%, #34495e 100%)';
+                    scene.style.background = 'linear-gradient(180deg, #0f1a30 0%, #1a2a4a 100%)';
                     document.querySelector('.house-window').style.background = '#ff6b6b';
                     document.querySelector('.house-window').style.boxShadow = '0 0 20px #ff6b6b';
+                    // Добавляем звезды
+                    addStars();
+                    btnNight.innerHTML = '<span>🌞</span> Дневной режим';
                 } else {
-                    scene.style.background = 'linear-gradient(180deg, #87CEEB 0%, #B0E2FF 100%)';
-                    document.querySelector('.house-window').style.background = '#FFD700';
-                    document.querySelector('.house-window').style.boxShadow = '0 0 10px #FFD700';
+                    scene.style.background = 'linear-gradient(180deg, #1e5799 0%, #2989d8 50%, #7db9e8 100%)';
+                    document.querySelector('.house-window').style.background = '#ffeb3b';
+                    document.querySelector('.house-window').style.boxShadow = '0 0 15px #ffeb3b';
+                    // Убираем звезды
+                    removeStars();
+                    btnNight.innerHTML = '<span>🌙</span> Ночной режим';
                 }
+            }
+
+            // Добавление звезд
+            function addStars() {
+                if (starsOn) return;
+                starsOn = true;
+                
+                starsInterval = setInterval(() => {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.innerHTML = '★';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 50 + '%';
+                    star.style.animationDelay = Math.random() * 4 + 's';
+                    star.style.fontSize = (Math.random() * 8 + 8) + 'px';
+                    
+                    scene.appendChild(star);
+                    
+                    // Удаляем звезду через некоторое время
+                    setTimeout(() => {
+                        if (star.parentNode) {
+                            star.remove();
+                        }
+                    }, 10000);
+                }, 500);
+            }
+
+            // Удаление звезд
+            function removeStars() {
+                starsOn = false;
+                clearInterval(starsInterval);
+                const stars = document.querySelectorAll('.star');
+                stars.forEach(star => {
+                    star.remove();
+                });
             }
 
             // Магические частицы
@@ -797,18 +1281,28 @@
                 createMagicParticles();
                 
                 // Меняем цвета сцены
-                const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#a58fe9'];
+                const colors = [
+                    'linear-gradient(180deg, #ff6b6b 0%, #ff8e8e 100%)',
+                    'linear-gradient(180deg, #4ecdc4 0%, #88e2d8 100%)',
+                    'linear-gradient(180deg, #45b7d1 0%, #7fd1e8 100%)',
+                    'linear-gradient(180deg, #96ceb4 0%, #c5e8d4 100%)',
+                    'linear-gradient(180deg, #a58fe9 0%, #c5b5f3 100%)'
+                ];
                 let colorIndex = 0;
                 
                 const colorInterval = setInterval(() => {
-                    scene.style.background = `linear-gradient(180deg, ${colors[colorIndex]} 0%, ${colors[(colorIndex + 1) % colors.length]} 100%)`;
+                    scene.style.background = colors[colorIndex];
                     colorIndex = (colorIndex + 1) % colors.length;
                 }, 500);
                 
                 // Останавливаем через 5 секунд
                 setTimeout(() => {
                     clearInterval(colorInterval);
-                    scene.style.background = 'linear-gradient(180deg, #87CEEB 0%, #B0E2FF 100%)';
+                    if (isNightMode) {
+                        scene.style.background = 'linear-gradient(180deg, #0f1a30 0%, #1a2a4a 100%)';
+                    } else {
+                        scene.style.background = 'linear-gradient(180deg, #1e5799 0%, #2989d8 50%, #7db9e8 100%)';
+                    }
                 }, 5000);
                 
                 showWish();
@@ -825,7 +1319,7 @@
                 }
             });
 
-            btnLights.addEventListener('click', startLights);
+            btnLights.addEventListener('click', toggleLights);
             btnWish.addEventListener('click', showWish);
             btnNight.addEventListener('click', toggleNightMode);
             btnMagic.addEventListener('click', createMagicParticles);
